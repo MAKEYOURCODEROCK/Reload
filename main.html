@@ -1,0 +1,138 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Reload</title>
+    <style>
+        body{
+            background-size: 100% 100%;
+        }
+
+
+        .search-back{
+            background-color: rgb(230, 225, 225);
+            width: 100%;
+            height: 8%;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
+        
+        #search{
+            background-color: rgb(245, 243, 243);
+            color: black;
+            font-family: arial;
+            resize: none;
+            width: 80%;
+            height: 75%;
+            position: absolute;
+            top: 12.5%;
+            left: 1%;
+            border: none;
+            border-radius: 5px;
+            vertical-align: middle;
+            padding: 10px;
+            outline: none;
+        }
+
+        @media only screen and (min-height: 800px){
+            .search-back{
+                background-color: rgb(230, 225, 225);
+                width: 100%;
+                height: 5%;
+                position: absolute;
+                top: 0%;
+                left: 0%;
+            }
+        
+            #search{
+                background-color: rgb(245, 243, 243);
+                color: black;
+                font-family: arial;
+                resize: none;
+                width: 80%;
+                height: 75%;
+                position: absolute;
+                top: 12.5%;
+                left: 1%;
+                border: none;
+                border-radius: 5px;
+                vertical-align: middle;
+                padding: 10px;
+                outline: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-back">
+        <input id="search" placeholder="Search Google or Type A URL"></input>
+    </div>
+    <script>
+        /*document.write=function(s){
+            var scripts = document.getElementsByTagName('script');
+            var lastScript = scripts[scripts.length-1];
+            lastScript.insertAdjacentHTML("beforebegin", s);
+        }*/
+
+        //genrate background pictrues
+        var imgs = ["background.jpeg", "background_one.jpeg", "background_two.jpeg", "background_three.jpeg", "background_four.jpeg", "background_five.jpeg", "background_six.jpeg", "background_seven.jpeg", "background_eight.jpeg", "background_nine.jpeg", "background_ten.jpeg"];
+        const img = imgs[Math.floor(Math.random() * imgs.length)];
+
+
+
+        document.body.style.backgroundImage = "url(images/"+img+")";
+
+
+        function getWeather(city){
+            console.log(city);
+        }
+
+        $.ajax({
+            url: "https://geolocation-db.com/jsonp",
+            jsonpCallback: "callback",
+            dataType: "jsonp",
+            success: function(location) {
+                getWeather(location.city);
+            }
+        });
+
+        function googledecoder(){
+            var url = document.getElementById("search").value;
+            if(url.includes("http") == true){
+                window.open("url")
+            }else if(url.includes(".zip") == true || url.includes(".bat") == true || url.includes(".docx") == true || url.includes(".doc") == true){
+                var a = document.createElement("a");
+                a.download = "";
+                a.style = "display: none;";
+                a.href= url;
+                a.click();
+                document.body.appendChild(a);
+            }else if(url.includes(".com") == true || url.includes(".ca") == true || url.includes(".net") == true || url.includes(".org") == true || url.includes(".edu") == true || url.includes(".xyz") == true || url.includes(".gov") == true && url.includes("http") == false){
+                url = "https://" + url;
+                window.open(url)
+            }else if(url.charAt(0) == "/" || url.charAt(2) == "C:"){
+                window.open("file://" + url)
+            }else{
+                //run google search
+                url = url.replace(" ", "+")
+                window.open("https://www.google.com/search?q=" + url)
+            }
+            document.getElementById("search").value = "";
+        }
+
+
+        var input = document.getElementById("search");
+        input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            googledecoder();
+        }
+        });
+
+
+    </script>
+</body>
+</html>
